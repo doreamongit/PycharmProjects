@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>AHLogServer</title>
+</head>
+<body>
+<form action="/clean" method="get">
+        <input type="submit" value="清空">
+</form>
+<pre>{{log}}</pre>
+<script type="text/javascript">//<![CDATA[
+function myrefresh() {
+    window.location.reload();
+}
+setTimeout('myrefresh()', 1000); //指定1秒刷新一次
+//]]>
+</script>
+
+<script type="text/javascript">
+        var vm = new Vue({
+            el: '#container',
+            created: function() {
+                Vue.nextTick(function() {
+                    setTimeout(function() {
+                        document.scrollingElement.scrollTop = document.scrollingElement.scrollHeight;
+                    }, 150);
+
+                });
+            }
+        })
+    </script>
+
+</body>
+</html>
+{##}
+{#<script language="JavaScript">#}
+{##}
+{#function myrefresh() {#}
+{#    window.location.reload();#}
+{#}#}
+{#setTimeout('myrefresh()', 1000); //指定1秒刷新一次#}
+{#</script>#}

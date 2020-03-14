@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+
+<label>筛选条件</label><br/><br/>
+<form action="/filter" method="get">
+        价格区间<input type="text" name="minPrice"/>元至<input type="text" name="maxPrice" />元<br/><br/>
+        <input type="submit" value="搜索">
+    </form>
+<br/><br/>
+<script type="text/javascript">
+var Dict = {{ Dict|safe }};
+var minPrice = ''
+if (Dict["minPrice"] != undefined) {
+    minPrice = Dict['minPrice'];
+}
+
+var maxPrice = ''
+if (Dict["maxPrice"] != undefined) {
+    maxPrice = Dict['maxPrice'];
+}
+
+document.getElementsByName("minPrice")[0].value=minPrice;
+document.getElementsByName("maxPrice")[0].value=maxPrice;
+
+var filterAry = []
+if (Dict["filterAry"] != undefined) {
+    filterAry = Dict['filterAry'];
+}
+
+
+
+  window.onload = function(){
+	  var tbody = document.getElementById('tbMain');
+
+	  for(var i = 0;i < filterAry.length; i++){ //遍历一下json数据
+		  var trow = getDataRow(filterAry[i]); //定义一个方法,返回tr数据
+	  	  tbody.appendChild(trow);
+		}
+
+	  }
+
+  function getDataRow(h){
+	 var row = document.createElement('tr'); //创建行
+     row.className = 'clickable-row';
+     detailHref = '/detail?code='+h.code
+     row.setAttribute('href', detailHref);
+
+	 var idCell = document.createElement('td'); //创建第一列i
+	 idCell.innerHTML = h.code; //填充数据
+	 row.appendChild(idCell); //加入行  ，下面类似
+
+	 var nameCell = document.createElement('td');//创建第二列name
+	 nameCell.innerHTML = h.name;
+	 row.appendChild(nameCell);
+
+	 var jobCell = document.createElement('td');//创建第三列job
+	 jobCell.innerHTML = h.high;
+	 row.appendChild(jobCell);
+
+	 return row; //返回tr数据
+	 }
+
+	 jQuery(document).ready(function($) {
+
+
+
+
+  $("#stocktable").on('click', 'tr', function () {
+       var href = $(this).attr('href');
+       window.location = href;
+});
+
+});
+
+</script>
+
+<div id="stocklist">
+<table class="stocktable" id="stocktable" width="600" border="1" cellspacing="0">
+    <thead>
+       <tr>
+          <th>代码</th>
+          <th>名称</th>
+          <th>职位</th>
+          <th>操作</th>
+       </tr>
+    </thead>
+    <tbody id="tbMain"></tbody>
+ </table>
+
+</div>
+
+<br/><br/>
+
+
+</body>
+</html>
